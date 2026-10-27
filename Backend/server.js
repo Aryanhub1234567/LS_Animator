@@ -4,12 +4,15 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const ffmpeg = require('fluent-ffmpeg');
+const { time } = require('console');
 // 2. NEW: Import the path to the local binary we just downloaded
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 // 3. NEW: Tell fluent-ffmpeg to use this specific path
 ffmpeg.setFfmpegPath(ffmpegPath);
 
 const app = express();
+
+
 const PORT = 3000;
 
 // Enable CORS so the React frontend can communicate with this API
@@ -36,6 +39,14 @@ const upload = multer({ storage });
 
 // The main export endpoint
 // We expect up to 3 files: audio, background, and mouth
+
+app.get("/", (req, res, next) => {
+  res.json({
+    Sucess: true,
+    Time: new Date().toISOString()
+  })
+})
+
 app.post('/api/export', upload.fields([
   { name: 'audio', maxCount: 1 },
   { name: 'background', maxCount: 1 },
